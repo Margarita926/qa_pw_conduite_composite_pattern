@@ -47,4 +47,12 @@ export class ApiComposite {
   async assertSuccessResponseCode(response) {
     await this.users.assertSuccessResponseCode(response);
   }
+
+  async createComment(slug, comment, token = null) {
+  return await this.comments.createComment(slug, comment, token);
+}
+  async deleteComment(slug, commentId, token = null) {
+  return await this.comments.deleteComment(slug, commentId, token);
+}
+
 }
