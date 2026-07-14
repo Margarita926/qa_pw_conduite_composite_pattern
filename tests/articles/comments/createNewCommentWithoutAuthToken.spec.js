@@ -2,28 +2,27 @@ import {test} from '../../_fixtures/fixtures';
 
 test(`Create new comment without auth token`, async ({
   registeredUser,
-  articlesApi,
-  commentsApi,
-  articleWithoutTags,
+  api,
+  articleWithoutTags,   
 }) => {
   const article = articleWithoutTags;
 
-  const response = await articlesApi.createArticle(
+  const response = await api.createArticle(
     article,
     registeredUser.token,
   );
 
-  await articlesApi.assertSuccessResponseCode(response);
+  await api.assertSuccessResponseCode(response);
 
   const comment = {
     body: 'This is a comment',
   };
 
-  const commentResponse = await commentsApi.createComment(
+  const commentResponse = await api.comments.createComment(
     (await response.json()).article.slug,
     comment,
     null,
   );
 
-  await commentsApi.assertUnauthorizedResponseCode(commentResponse);
+  await api.comments.assertUnauthorizedResponseCode(commentResponse);
 });

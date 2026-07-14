@@ -2,26 +2,25 @@ import {test} from '../../_fixtures/fixtures';
 
 test(`Create new comment without body field`, async ({
   registeredUser,
-  articlesApi,
-  commentsApi,
+  api,
   articleWithoutTags,
 }) => {
   const article = articleWithoutTags;
 
-  const response = await articlesApi.createArticle(
+  const response = await api.createArticle(
     article,
     registeredUser.token,
   );
 
-  await articlesApi.assertSuccessResponseCode(response);
+  await api.assertSuccessResponseCode(response);
 
   const comment = {};
 
-  const commentResponse = await commentsApi.createComment(
+  const commentResponse = await api.comments.createComment(
     (await response.json()).article.slug,
     comment,
     registeredUser.token,
   );
 
-  await commentsApi.assertSuccessResponseCode(commentResponse);
+  await api.comments.assertSuccessResponseCode(commentResponse);
 });

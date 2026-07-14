@@ -2,18 +2,18 @@ import {test} from '../../_fixtures/fixtures';
 
 test(`Create new comment to the article created by another user`, async ({
   registeredUser,
-  articlesApi,
+  api,
   commentsApi,
   articleWithoutTags,
 }) => {
   const article = articleWithoutTags;
 
-  const response = await articlesApi.createArticle(
+  const response = await api.createArticle(
     article,
     registeredUser.token,
   );
 
-  await articlesApi.assertSuccessResponseCode(response);
+  await api.assertSuccessResponseCode(response);
 
   const comment = {
     body: 'This is a comment',

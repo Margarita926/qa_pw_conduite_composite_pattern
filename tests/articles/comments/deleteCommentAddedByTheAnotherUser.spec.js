@@ -2,35 +2,35 @@ import {test} from '../../_fixtures/fixtures';
 
 test(`Delete comment added by the another user`, async ({
   registeredUser,
-  articlesApi,
-  commentsApi,
+  api,
   articleWithoutTags,
 }) => {
   const article = articleWithoutTags;
 
-  const response = await articlesApi.createArticle(
+  // const response = await api.createArticle(
+  //   article,
+  //   registeredUser.token,
+  // );
+
+  const response = await api.createArticle(
     article,
     registeredUser.token,
   );
-
-  await articlesApi.assertSuccessResponseCode(response);
-
-  const comment = {
-    body: 'This is a comment',
-  };
-
-  const commentResponse = await commentsApi.createComment(
+  await api.assertSuccessResponseCode(response);
+  const comment = { body: 'This is a comment' };
+  const commentResponse = await api.comments.createComment(
     (await response.json()).article.slug,
     comment,
     registeredUser.token,
   );
-   await commentsApi.assertSuccessResponseCode(commentResponse);
-
-  const DeleteCommentResponse = await commentsApi.deleteComment(
+  await api.comments.assertSuccessResponseCode(commentResponse);
+  // Отримуємо ID коментаря
+  const commentId = (await commentResponse.json()).comment.id;
+  // Намагаємося видалити коментар іншим користувачем
+  const deleteResponse = await api.comments.deleteComment(
     (await response.json()).article.slug,
-    (await commentResponse.json()).comment.id,
-    registeredUser.token,
+    commentId,
+    registeredUser.token, // той самий користувач — тест потребує іншого!
   );
-
-  await commentsApi.assertNoContentResponseCode(DeleteCommentResponse);
+  await api.comments.assertNoContentResponseCode(deleteResponse);
 });
