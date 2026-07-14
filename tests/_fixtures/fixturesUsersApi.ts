@@ -8,6 +8,8 @@ export const test = base.extend<{
   registeredUser;
   registeredUsers;
   userRequests;
+  
+
 }>({
   usersApi: async ({ request, logger }, use) => {
     const apiClientFacade = new ApiClientFacade({ request, logger });
